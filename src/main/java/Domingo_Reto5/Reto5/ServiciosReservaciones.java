@@ -4,6 +4,10 @@
  */
 package Domingo_Reto5.Reto5;
 
+
+
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,16 +24,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServiciosReservaciones {
      @Autowired
-    private RepositorioReservaciones metodosCrud;
-
+    /**
+    *  Aqui encontramos los metodos Crud para la 
+    */
+     private RepositorioReservaciones metodosCrud;
+     
+    /**
+    *  Aqui encontramos la List de Reservaciones
+    */ 
     public List<Reservaciones> getAll(){
         return metodosCrud.getAll();
     }
-
+    
+    /**
+    *  Aqui obtenemos la Reservacion
+    */
     public Optional<Reservaciones> getReservation(int reservationId) {
         return metodosCrud.getReservation(reservationId);
     }
-
+    
+    /**
+    *  Aqui guardamos la reservacion 
+    */
     public Reservaciones save(Reservaciones reservation){
         if(reservation.getIdReservation()==null){
             return metodosCrud.save(reservation);
@@ -42,7 +58,10 @@ public class ServiciosReservaciones {
             }
         }
     }
-
+    
+    /**
+    *  Aqui actualizamos la reservacion
+    */
     public Reservaciones update(Reservaciones reservation){
         if(reservation.getIdReservation()!=null){
             Optional<Reservaciones> e= metodosCrud.getReservation(reservation.getIdReservation());
@@ -66,7 +85,10 @@ public class ServiciosReservaciones {
             return reservation;
         }
     }
-
+    
+    /**
+    *  Aqui eliminamos la reservacion 
+    */
     public boolean deleteReservation(int reservationId) {
         Boolean aBoolean = getReservation(reservationId).map(reservation -> {
             metodosCrud.delete(reservation);
@@ -77,6 +99,9 @@ public class ServiciosReservaciones {
     //**************************************************************************
     //*********************** DESDE AQUI HICE EL RETO 5 ************************
     
+    /**
+    *  Aqui usamos un metodo para el informe del estado
+    */
     public StatusReservas reporteStatusServicio (){
         List<Reservaciones>completed= metodosCrud.ReservacionStatusRepositorio("completed");
         List<Reservaciones>cancelled= metodosCrud.ReservacionStatusRepositorio("cancelled");
@@ -84,6 +109,9 @@ public class ServiciosReservaciones {
         return new StatusReservas(completed.size(), cancelled.size() );
     }
     
+    /**
+    *  Aqui obtenemos la lista para el tiempo de la reserva
+    */
     public List<Reservaciones> reporteTiempoServicio (String datoA, String datoB){
         SimpleDateFormat parser = new SimpleDateFormat ("yyyy-MM-dd");
         
@@ -103,12 +131,11 @@ public class ServiciosReservaciones {
         } 
     }
     
+    /**
+    *  Aqui contamos los clientes que tienen reservas
+    */
     public List<ContadorClientes> reporteClientesServicio(){
             return metodosCrud.getClientesRepositorio();
         }
-  
 
-    
-    
-    
 }
